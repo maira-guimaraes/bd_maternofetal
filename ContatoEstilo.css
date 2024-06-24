@@ -1,0 +1,78 @@
+/* ContatoEstilo.css estilos da página inicial*/
+
+body {
+    padding: 0;
+    margin: 0;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    width: 100%; /* Ocupa toda a largura disponível da tela */
+    max-width: 500px; /* Limita a largura máxima a 500px */
+    font-family: Verdana, Tahoma, sans-serif;
+    font-size: 15px;
+    background-color: #CC3300;
+    padding: 20px; /* Adiciona espaçamento interno */
+    box-sizing: border-box; /* Inclui padding e border na largura total */
+    margin: 0 auto; /* Centraliza o formulário horizontalmente */
+}
+
+label, input, textarea {
+    margin-bottom: 10px;
+}
+
+h1 {
+    margin-bottom: 20px;
+    margin-left: 20px;
+    color: #66FFFF;
+    text-shadow: 5px 5px 5px black;
+}
+
+h2 {
+    margin-bottom: 20px;
+    margin-left: 20px;
+    color: #66FFFF;
+    text-shadow: 5px 5px 5px black;
+}
+
+input, textarea {
+    width: calc(100% - 40px); /* Ajusta a largura para ocupar todo o espaço disponível */
+    padding: 10px;
+    color: black;
+    margin-left: 20px;
+    margin-top: 10px;
+    border-radius: 5px;
+    border: 1px solid;
+}
+
+input:hover, textarea:hover, input:focus, textarea:focus {
+    border-color: #000066;
+    box-shadow: 5px 0px 9px #FFFF00;
+    background-color: #66FFFF;
+    color: black;
+    font-weight: bold;
+}
+
+.enviar {
+    background-color: #66FFFF;
+    height: 40px;
+    width: 100px;
+    font-weight: bold;
+    border-radius: 5px;
+    border: 1px solid;
+    color: black;
+    cursor: pointer;
+    margin-left: 20px; /* Alinha com os inputs */
+}
+
+textarea {
+    height: 120px;
+    line-height: 20px;
+}
+
+form label {
+    margin-left: 20px;
+    color: #FFFFFF;
+    font-weight: bold;
+}
