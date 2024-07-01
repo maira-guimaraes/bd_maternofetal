@@ -112,19 +112,24 @@ def main():
 
     # Botão para enviar o formulário
     if st.button('Enviar formulário'):
-        data = (
-            idade, escolaridade, cidade_residencia, estado_residencia, maternidade_parto, local_acompanhamento_prenatal, 
-            tipo_parto, idade_gestacional, avaliacao_risco, num_consultas_prenatal, tempo_espera_atendimento, 
-            visita_domiciliar, acesso_consultas, acesso_exames_laboratoriais, acesso_exames_imagem, 
-            orientacao_aleitamento, colocacao_nascidos_colos_peitos, acompanhante_escolha_parto, 
-            respeito_escolha_local_parto, plano_individual_parto, liberdade_posicao_trabalho_parto, 
-            silencio_maternidade, respeito_privacidade_parto, apoio_empatico_trabalho_parto, 
-            oferta_liquidos_trabalho_parto, metodos_alivio_dor_nao_invasivos, mal_atendimento, 
-            nao_atendida_necessidade, agressao_verbal, agressao_fisica, uso_episiotomia, lavagem_utero, 
-            infusao_intravenosa
-        )
-        insert_data_into_db(data)
-        st.success('Dados enviados com sucesso!')
+        data_sociodemograficos = (
+        idade, escolaridade, cidade_residencia, estado_residencia, maternidade_parto, local_acompanhamento_prenatal
+    )
+    caracteristicas_parturientes = (
+        tipo_parto, idade_gestacional, avaliacao_risco, num_consultas_prenatal, tempo_espera_atendimento, visita_domiciliar
+    )
+    informacoes_recebidas = (
+        acesso_consultas, acesso_exames_laboratoriais, acesso_exames_imagem, orientacao_aleitamento
+    )
+    equidade_opinioes = (
+        colocacao_nascidos_colos_peitos, acompanhante_escolha_parto, respeito_escolha_local_parto, plano_individual_parto, liberdade_posicao_trabalho_parto, silencio_maternidade, respeito_privacidade_parto, apoio_empatico_trabalho_parto, oferta_liquidos_trabalho_parto, metodos_alivio_dor_nao_invasivos
+    )
+    situacao_desrespeitosa = (
+        mal_atendimento, nao_atendida_necessidade, agressao_verbal, agressao_fisica, uso_episiotomia, lavagem_utero, infusao_intravenosa
+    )
+
+    insert_data_into_db(data_sociodemograficos, caracteristicas_parturientes, informacoes_recebidas, equidade_opinioes, situacao_desrespeitosa)
+    st.success('Dados enviados com sucesso!')
 
 # Execução do programa principal
 if __name__ == '__main__':
