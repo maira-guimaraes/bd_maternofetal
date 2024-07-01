@@ -12,56 +12,49 @@ def connect_to_db():
     return db_connection
 
 # Função para inserir dados no banco de dados
-def insert_data_into_db(data):
+def insert_data_into_db(dados_sociodemograficos, caracteristicas_parturientes, 
+        informacoes_recebidas, equidade_opinioes, situacao_desrespeitosa):
     db_connection = connect_to_db()
     cursor = db_connection.cursor()
     
-    # inserção tabela 1
-    query = """
-    INSERT INTO dados_sociodemograficos (
-        idade, escolaridade, cidade_residencia, estado_residencia, maternidade_parto, local_acompanhamento_prenatal
-    ) VALUES (%s, %s, %s, %s, %s, %s)
-    """
-    cursor.execute(query, data[:6])
-
-    # inserção tabela 2
-    query = """
-    INSERT INTO caracteristicas_parturientes (
-        tipo_parto, idade_gestacional, avaliacao_risco, num_consultas_prenatal, tempo_espera_atendimento, visita_domiciliar
-    ) VALUES (%s, %s, %s, %s, %s, %s)
-    """
-    cursor.execute(query, data[6:12])
-
-    # inserção tabela 3
-    query = """
-    INSERT INTO informacoes_recebidas (
-        acesso_consultas, acesso_exames_laboratoriais, acesso_exames_imagem, orientacao_aleitamento
-    ) VALUES (%s, %s, %s, %s)
-    """
-    cursor.execute(query, data[12:16])
-
-    # inserção tabela 4
-    query = """
-    INSERT INTO equidade_opinioes (
-        colocacao_nascidos_colos_peitos, acompanhante_escolha_parto, respeito_escolha_local_parto,
-        plano_individual_parto, liberdade_posicao_trabalho_parto, silencio_maternidade, 
-        respeito_privacidade_parto, apoio_empatico_trabalho_parto, oferta_liquidos_trabalho_parto,
-        metodos_alivio_dor_nao_invasivos
-    ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
-    """
-    cursor.execute(query, data[16:26])
-
-    # inserção tabela 5
-    query = """
-    INSERT INTO ocorrencia_situacao (
-        mal_atendimento, nao_atendida_necessidade, agressao_verbal, agressao_fisica,
-        uso_episiotomia, lavagem_utero, infusao_intravenosa
-    ) VALUES (%s, %s, %s, %s, %s, %s, %s)
-    """
-    cursor.execute(query, data[26:])
-    db_connection.commit()
-    cursor.close()
-    db_connection.close()
+    # Inserir um novo registro na tabela formularios
+    cursor.execute("INSERT INTO formularios (data_preenchimento) VALUES (CURRENT_TIMESTAMP)")
+    formulario_id = cursor.lastrowid
+    
+    # Inserir dados na tabela 1
+    cursor.execute("""
+        INSERT INTO dados_sociodemograficos (
+            idade, escolaridade, cidade_residencia, estado_residencia, maternidade_parto, local_acompanhamento_prenatal, formulario_id
+        ) VALUES (%s, %s, %s, %s, %s, %s, %s)
+    """, dados_sociodemograficos + (formulario_id,))
+    
+    # Inserir dados na tabela 2
+    cursor.execute("""
+        INSERT INTO caracteristicas_parturientes (
+            tipo_parto, idade_gestacional, avaliacao_risco, num_consultas_prenatal, tempo_espera_atendimento, visita_domiciliar, formulario_id
+        ) VALUES (%s, %s, %s, %s, %s, %s, %s)
+    """, caracteristicas_parturientes + (formulario_id,))
+    
+    # Inserir dados na tabela 3
+    cursor.execute("""
+        INSERT INTO informacoes_recebidas (
+            acesso_consultas, acesso_exames_laboratoriais, acesso_exames_imagem, orientacao_aleitamento, formulario_id
+        ) VALUES (%s, %s, %s, %s, %s)
+    """, informacoes_recebidas + (formulario_id,))
+    
+    # Inserir dados na tabela 4
+    cursor.execute("""
+        INSERT INTO equidade_opinioes (
+            colocacao_nascidos_colos_peitos, acompanhante_escolha_parto, respeito_escolha_local_parto, plano_individual_parto, liberdade_posicao_trabalho_parto, silencio_maternidade, respeito_privacidade_parto, apoio_empatico_trabalho_parto, oferta_liquidos_trabalho_parto, metodos_alivio_dor_nao_invasivos, formulario_id
+        ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+    """, equidade_opinioes + (formulario_id,))
+    
+    # Inserir dados na tabela 5
+    cursor.execute("""
+        INSERT INTO ocorrencia_situacao (
+            mal_atendimento, nao_atendida_necessidade, agressao_verbal, agressao_fisica, uso_episiotomia, lavagem_utero, infusao_intravenosa, formulario_id
+        ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
+    """, situacao_desrespeitosa + (formulario_id,))
 
 # Função principal para executar o Streamlit
 def main():
