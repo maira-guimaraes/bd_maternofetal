@@ -13,7 +13,7 @@ def connect_to_db():
 
 # Função para inserir dados no banco de dados
 def insert_data_into_db(dados_sociodemograficos, caracteristicas_parturientes, 
-        informacoes_recebidas, equidade_opinioes, situacao_desrespeitosa):
+        informacoes_recebidas, equidade_opinioes, ocorrencia_situacao):
     db_connection = connect_to_db()
     cursor = db_connection.cursor()
     
@@ -54,7 +54,11 @@ def insert_data_into_db(dados_sociodemograficos, caracteristicas_parturientes,
         INSERT INTO ocorrencia_situacao (
             mal_atendimento, nao_atendida_necessidade, agressao_verbal, agressao_fisica, uso_episiotomia, lavagem_utero, infusao_intravenosa, formulario_id
         ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
-    """, situacao_desrespeitosa + (formulario_id,))
+    """, ocorrencia_situacao + (formulario_id,))
+
+    db_connection.commit()
+    cursor.close()
+    db_connection.close()
 
 # Função principal para executar o Streamlit
 def main():
@@ -100,7 +104,7 @@ def main():
     oferta_liquidos_trabalho_parto = st.checkbox('Oferta de líquidos por via oral durante o trabalho de parto e parto')
     metodos_alivio_dor_nao_invasivos = st.checkbox('Métodos não invasivos e não farmacológicos de alívio da dor, como massagem e técnicas de relaxamento, durante o trabalho de parto')
 
-    # Ocorrência de situação desrespeitosa e práticas prejudiciais - tabela 5
+     # Ocorrência de situação desrespeitosa e práticas prejudiciais - dados da tabela 5
     st.write('Ocorrência de situação desrespeitosa e práticas prejudiciais')
     mal_atendimento = st.checkbox('Mal Atendimento')
     nao_atendida_necessidade = st.checkbox('Não foi atendida/ouvida em sua necessidade')
@@ -109,27 +113,26 @@ def main():
     uso_episiotomia = st.checkbox('Uso liberal e rotineiro de episiotomia')
     lavagem_utero = st.checkbox('Lavagem uterina rotineira após o parto')
     infusao_intravenosa = st.checkbox('Infusão intravenosa de rotina no trabalho de parto')
-
+    
     # Botão para enviar o formulário
     if st.button('Enviar formulário'):
-        data_sociodemograficos = (
-        idade, escolaridade, cidade_residencia, estado_residencia, maternidade_parto, local_acompanhamento_prenatal
-    )
-    caracteristicas_parturientes = (
-        tipo_parto, idade_gestacional, avaliacao_risco, num_consultas_prenatal, tempo_espera_atendimento, visita_domiciliar
-    )
-    informacoes_recebidas = (
-        acesso_consultas, acesso_exames_laboratoriais, acesso_exames_imagem, orientacao_aleitamento
-    )
-    equidade_opinioes = (
-        colocacao_nascidos_colos_peitos, acompanhante_escolha_parto, respeito_escolha_local_parto, plano_individual_parto, liberdade_posicao_trabalho_parto, silencio_maternidade, respeito_privacidade_parto, apoio_empatico_trabalho_parto, oferta_liquidos_trabalho_parto, metodos_alivio_dor_nao_invasivos
-    )
-    situacao_desrespeitosa = (
-        mal_atendimento, nao_atendida_necessidade, agressao_verbal, agressao_fisica, uso_episiotomia, lavagem_utero, infusao_intravenosa
-    )
-
-    insert_data_into_db(data_sociodemograficos, caracteristicas_parturientes, informacoes_recebidas, equidade_opinioes, situacao_desrespeitosa)
-    st.success('Dados enviados com sucesso!')
+        dados_sociodemograficos = (
+            idade, escolaridade, cidade_residencia, estado_residencia, maternidade_parto, local_acompanhamento_prenatal
+        )
+        caracteristicas_parturientes = (
+            tipo_parto, idade_gestacional, avaliacao_risco, num_consultas_prenatal, tempo_espera_atendimento, visita_domiciliar
+        )
+        informacoes_recebidas = (
+            acesso_consultas, acesso_exames_laboratoriais, acesso_exames_imagem, orientacao_aleitamento
+        )
+        equidade_opinioes = (
+            colocacao_nascidos_colos_peitos, acompanhante_escolha_parto, respeito_escolha_local_parto, plano_individual_parto, liberdade_posicao_trabalho_parto, silencio_maternidade, respeito_privacidade_parto, apoio_empatico_trabalho_parto, oferta_liquidos_trabalho_parto, metodos_alivio_dor_nao_invasivos
+        )
+        ocorrencia_situacao = (
+            mal_atendimento, nao_atendida_necessidade, agressao_verbal, agressao_fisica, uso_episiotomia, lavagem_utero, infusao_intravenosa
+        )
+        insert_data_into_db(dados_sociodemograficos, caracteristicas_parturientes, informacoes_recebidas, equidade_opinioes, ocorrencia_situacao)
+        st.success('Dados enviados com sucesso!')
 
 # Execução do programa principal
 if __name__ == '__main__':
